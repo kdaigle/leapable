@@ -1,4 +1,5 @@
 GEM
+  remote: http://rubygems.org/
   specs:
     artoo (1.4.1)
       celluloid (~> 0.15.0)
