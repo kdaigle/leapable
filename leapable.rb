@@ -1,6 +1,7 @@
 require "artoo"
 
 $tick = 0
+
 $health = 3
 HEALTH_COLORS = {
   3 => [0, 255, 0],
@@ -10,6 +11,9 @@ HEALTH_COLORS = {
 }
 
 $hands_seen = false
+
+$started_at = nil
+$game_over = false
 
 connection :leapmotion, :adaptor => :leapmotion, :port => '127.0.0.1:6437'
 device :leapmotion, :driver => :leapmotion, :connection => :leapmotion
@@ -33,8 +37,8 @@ end
 
 def game_over
   sphero.stop
-  leapmotion.disconnect
-  puts "Game Over"
+  puts "Game Over! Your time: #{Time.now - $started_at}"
+  $game_over = true
 end
 
 def set_color_by_health
@@ -48,7 +52,11 @@ def on_frame(*args)
   $tick += 1
   return unless $tick % 65 == 0
   if hand = frame.hands[0]
-    $hands_seen = true
+    unless $hands_seen
+      $hands_seen = true
+      $started_at = Time.now
+      puts "Started: #{$started_at}"
+    end
     max_speed = 120
     x, y, z = hand.palmPosition
     speed = y < 150 ? 35 : (y / 300) * max_speed
