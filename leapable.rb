@@ -23,7 +23,7 @@ device :sphero, :driver => :sphero, :connection => :sphero
 
 work do
   sphero.set_color :white
-  sphero.roll 35, 90
+  sphero.roll 40, 90
   on sphero, :collision => :on_collision
   on leapmotion, :frame => :on_frame
 end
@@ -57,9 +57,10 @@ def on_frame(*args)
       $started_at = Time.now
       puts "Started: #{$started_at}"
     end
+    min_speed = 60
     max_speed = 120
     x, y, z = hand.palmPosition
-    speed = y < 150 ? 35 : (y / 300) * max_speed
+    speed = y < 150 ? 50 : (y / 300) * max_speed
     z *= -1
     x *= -1
     degrees = Math.atan2(z, x) * (180 / Math::PI)
