@@ -25,9 +25,10 @@ def on_frame(*args)
   frame = args[1]
 
   $tick += 1
-  return unless $tick % 40 == 0
+  return unless $tick % 35 == 0
   if hand = frame.hands[0]
     x, y, z = hand.palmPosition
+    puts y
     z *= -1
     degrees = Math.atan2(z, x) * (180 / Math::PI)
     direction = (degrees < 0 ? [degrees + 365, 365].min : degrees).round
