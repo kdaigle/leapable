@@ -25,7 +25,7 @@ def on_frame(*args)
   frame = args[1]
 
   $tick += 1
-  return unless $tick % 35 == 0
+  return unless $tick % 60 == 0
   if hand = frame.hands[0]
     x, y, z = hand.palmPosition
     puts y
