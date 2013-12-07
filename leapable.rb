@@ -9,6 +9,8 @@ HEALTH_COLORS = {
   1 => [255, 140, 0],
   0 => [255, 0, 0]
 }
+# TOGGLE
+$hit_off = false
 
 $hands_seen = false
 
@@ -57,15 +59,14 @@ def on_frame(*args)
       $started_at = Time.now
       puts "Started: #{$started_at}"
     end
-    min_speed = 60
-    max_speed = 120
+    min_speed = 75
+    max_speed = 135
     x, y, z = hand.palmPosition
     speed = y < 150 ? 50 : (y / 300) * max_speed
     z *= -1
     x *= -1
     degrees = Math.atan2(z, x) * (180 / Math::PI)
     direction = (degrees < 0 ? [degrees + 360, 360].min : [degrees, 360].min).round
-    puts direction
     set_color_by_health
     sphero.roll speed, direction
   elsif $hands_seen
@@ -75,6 +76,7 @@ def on_frame(*args)
 end
 
 def on_collision(*args)
+  # return if $hit_off
   x, y, z, axis, x_mag, y_mag, speed, timestamp = args[1].body
   hit if [x_mag, y_mag].max > 46
 end
