@@ -59,16 +59,21 @@ def on_frame(*args)
       $started_at = Time.now
       puts "Started: #{$started_at}"
     end
-    min_speed = 75
-    max_speed = 135
-    x, y, z = hand.palmPosition
-    speed = y < 150 ? 50 : (y / 300) * max_speed
-    z *= -1
-    x *= -1
-    degrees = Math.atan2(z, x) * (180 / Math::PI)
-    direction = (degrees < 0 ? [degrees + 360, 360].min : [degrees, 360].min).round
-    set_color_by_health
-    sphero.roll speed, direction
+    if frame.pointables.length == 0
+      sphero.stop
+      puts "STOP!"
+    else
+      min_speed = 75
+      max_speed = 135
+      x, y, z = hand.palmPosition
+      speed = y < 150 ? 50 : (y / 300) * max_speed
+      z *= -1
+      x *= -1
+      degrees = Math.atan2(z, x) * (180 / Math::PI)
+      direction = (degrees < 0 ? [degrees + 360, 360].min : [degrees, 360].min).round
+      set_color_by_health
+      sphero.roll speed, direction
+    end
   elsif $hands_seen
     sphero.set_color :white
     sphero.stop
