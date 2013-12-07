@@ -52,7 +52,7 @@ def on_frame(*args)
   frame = args[1]
 
   $tick += 1
-  return unless $tick % 65 == 0
+  return unless $tick % 60 == 0
   if hand = frame.hands[0]
     unless $hands_seen
       $hands_seen = true
@@ -64,7 +64,7 @@ def on_frame(*args)
       puts "STOP!"
     else
       min_speed = 75
-      max_speed = 135
+      max_speed = 120
       x, y, z = hand.palmPosition
       speed = y < 150 ? 50 : (y / 300) * max_speed
       z *= -1
